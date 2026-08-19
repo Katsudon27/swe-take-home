@@ -4,11 +4,12 @@
  * Local dev endpoint for Borrowing Calculator Code Challenge
  * 
  */
+require('dotenv').config();
 
 const http = require("http");
 
 const PORT = 3000;
-const VALID_PAT = ""; //TODO: add PAT to .env
+const VALID_PAT = process.env.VALID_PAT;
 
 const HEM_MATRIX = {
     low:    { 0: 1600, 1: 2100, 2: 2500, 3: 2800 },
