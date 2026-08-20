@@ -1,10 +1,6 @@
 const { BorrowingCalculator } = require('./BorrowingCalculator');
 const { APIClient } = require('./APIClient');
 
-// Global constant for mortgage simulation
-const INTEREST_RATE = 7.0; // 7.0% baseline interest rate
-const ASSESSMENT_RATE_BUFFER = 3.0; // 3.0% buffer added to interest rates
-
 function runConsoleMode() {
     const readline = require('readline');
     const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -16,24 +12,27 @@ function runConsoleMode() {
         rl.question("Number of Dependents: ", (dependents) => {
             rl.question("Declared Monthly Expenses: $", (expenses) => {
                 rl.question("Total Credit Card Limits: $", async (creditLimits) => {
-                    
-                    // Banks assess loans using base rate + buffer for safety
-                    const assessmentRate = INTEREST_RATE + ASSESSMENT_RATE_BUFFER;
-
                     const client = new APIClient();
-                    const borrowingCalculator = new BorrowingCalculator(client);
+                    const borrowingCalculator = new BorrowingCalculator(undefined, 7.0, 3.0);
+
+                    const parsedIncome = parseFloat(income)
+                    const parsedDependents = parseInt(dependents)
+
+                    const annualTax = await client.getTax(parsedIncome)
+                    const baselineHEM = await client.getHEM(parsedIncome, parsedDependents)
+
 
                     const result = await borrowingCalculator.calculateBorrowingPower(
-                        parseFloat(income),
-                        parseInt(dependents),
+                        parsedIncome,
+                        annualTax,
+                        baselineHEM,
                         parseFloat(expenses),
-                        parseFloat(creditLimits),
-                        assessmentRate
+                        parseFloat(creditLimits)
                     );
 
                     console.log("\n--- Calculation Summary ---");
-                    console.log(`Maximum Borrowing Power at ${INTEREST_RATE}%: $${result.maxLoanAmount.toLocaleString()}`);
-                    console.log(`Assumed Monthly Mortgage Repayment: $${result.monthlyRepayment.toLocaleString()} over 30 years`);
+                    console.log(`Maximum Borrowing Power at ${borrowingCalculator.interestRate}%: $${result.maxLoanAmount.toLocaleString()}`);
+                    console.log(`Assumed Monthly Mortgage Repayment: $${result.monthlyRepayment.toLocaleString()} over ${borrowingCalculator.loanTermYears} years`);
                     
                     rl.close();
                 });
