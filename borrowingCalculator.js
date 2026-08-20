@@ -9,45 +9,12 @@
  * A server.js has been provided to supply these values.
  */
 
-require('dotenv').config();
-
 // Global constant for mortgage simulation
 const LOAN_TERM_MONTHS = 360; // 30 Years
 const INTEREST_RATE = 7.0; // 7.0% baseline interest rate
 const ASSESSMENT_RATE_BUFFER = 3.0; // 3.0% buffer added to interest rates
 
-const VALID_PAT = process.env.VALID_PAT
-
-// Legacy placeholder functions to replace with API calls
-async function getTax(income) {
-    const response = await fetch(`http://localhost:3000/api/tax?income=${income}`, {
-        headers: {
-        'Authorization': `Bearer ${VALID_PAT}`
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(`Tax API failed with status ${response.status}`);
-    }
-
-    const responseJSON = await response.json();
-    return responseJSON.tax;
-}
-
-async function getHEM(income, dependents) {
-    const response = await fetch(`http://localhost:3000/api/hem?income=${income}&dependents=${dependents}`, {
-        headers: {
-        'Authorization': `Bearer ${VALID_PAT}`
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(`HEM API failed with status ${response.status}`);
-    }
-
-    const responseJSON = await response.json();
-    return responseJSON.hem;
-}
+const { getTax, getHEM } = require('./apiClient');
 
 /**
  * Calculates the total borrowing power amount and the monthly repayment configuration
@@ -123,4 +90,4 @@ if (require.main === module) {
     runConsoleMode();
 }
 
-module.exports = { calculateBorrowingPower, getTax, getHEM };
+module.exports = { calculateBorrowingPower };
