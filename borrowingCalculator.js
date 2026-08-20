@@ -9,16 +9,29 @@
  * A server.js has been provided to supply these values.
  */
 
+require('dotenv').config();
+
 // Global constant for mortgage simulation
 const LOAN_TERM_MONTHS = 360; // 30 Years
 const INTEREST_RATE = 7.0; // 7.0% baseline interest rate
 const ASSESSMENT_RATE_BUFFER = 3.0; // 3.0% buffer added to interest rates
 
+const VALID_PAT = process.env.VALID_PAT
+
 // Legacy placeholder functions to replace with API calls
-function getTax(income) {
-    // REPLACE THIS
-    // Write your TAX API call code here.
-    return Math.round(income * 0.25);
+async function getTax(income) {
+    const response = await fetch(`http://localhost:3000/api/tax?income=${income}`, {
+        headers: {
+        'Authorization': `Bearer ${VALID_PAT}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`Tax API failed with status ${response.status}`);
+    }
+    
+    const responseJSON = await response.json();
+    return responseJSON.tax;
 }
 
 function getHEM(income, dependents) {
@@ -101,4 +114,4 @@ if (require.main === module) {
     runConsoleMode();
 }
 
-module.exports = { calculateBorrowingPower };
+module.exports = { calculateBorrowingPower, getTax };
