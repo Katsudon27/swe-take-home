@@ -2,7 +2,7 @@ require('dotenv').config();
 const SERVER_URL = process.env.SERVER_URL
 const VALID_PAT = process.env.VALID_PAT
 
-class apiClient {
+class APIClient {
     async getTax(income) {
         const response = await fetch(`${SERVER_URL}/api/tax?income=${income}`, {
             headers: {
@@ -34,4 +34,4 @@ class apiClient {
     }
 }
 
-module.exports = { apiClient };
+module.exports = { APIClient };

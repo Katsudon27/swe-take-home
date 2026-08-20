@@ -4,8 +4,8 @@
 
 
 const assert = require('assert'); 
-const { BorrowingCalculator } = require('./borrowingCalculator');
-const { apiClient } = require('./apiClient');
+const { BorrowingCalculator } = require('./BorrowingCalculator');
+const { APIClient } = require('./APIClient');
 
 describe('BorrowingCalculator', () => {
   describe('calculateBorrowingPower', () => {
@@ -38,8 +38,8 @@ describe('BorrowingCalculator', () => {
   });
 });
 
-describe('apiClient', () => {
-  const client = new apiClient();
+describe('APIClient', () => {
+  const client = new APIClient();
 
   describe ('getTax', () => {
     it('should return the calculated annual income tax', async () => {
