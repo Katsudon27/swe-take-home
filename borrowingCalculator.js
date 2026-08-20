@@ -29,15 +29,24 @@ async function getTax(income) {
     if (!response.ok) {
         throw new Error(`Tax API failed with status ${response.status}`);
     }
-    
+
     const responseJSON = await response.json();
     return responseJSON.tax;
 }
 
-function getHEM(income, dependents) {
-    // REPLACE THIS
-    // Write your HEM API call code here.
-    return 2000 + (dependents * 400);
+async function getHEM(income, dependents) {
+    const response = await fetch(`http://localhost:3000/api/hem?income=${income}&dependents=${dependents}`, {
+        headers: {
+        'Authorization': `Bearer ${VALID_PAT}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HEM API failed with status ${response.status}`);
+    }
+
+    const responseJSON = await response.json();
+    return responseJSON.hem;
 }
 
 /**
@@ -114,4 +123,4 @@ if (require.main === module) {
     runConsoleMode();
 }
 
-module.exports = { calculateBorrowingPower, getTax };
+module.exports = { calculateBorrowingPower, getTax, getHEM };
