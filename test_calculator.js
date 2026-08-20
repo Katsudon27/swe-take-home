@@ -4,7 +4,7 @@
 
 
 const assert = require('assert'); 
-const {calculateBorrowingPower} = require('./borrowingCalculator');
+const {calculateBorrowingPower, getTax} = require('./borrowingCalculator');
 
 describe('Term Deposit Calculator Tests', () => {
 
@@ -21,3 +21,15 @@ describe('Term Deposit Calculator Tests', () => {
   });
 });
 
+describe('getTax Tests', () => {
+
+  it('should return the calculated annual income tax', async () => {
+    const result = await getTax(125000);
+    assert.strictEqual(result, 25750);
+  });
+
+  it('should return 0 for 0 income', async () => {
+    const result = await getTax(0);
+    assert.strictEqual(result, 0);
+  });
+});
