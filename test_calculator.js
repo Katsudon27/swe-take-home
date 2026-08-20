@@ -4,21 +4,37 @@
 
 
 const assert = require('assert'); 
-const { calculateBorrowingPower } = require('./borrowingCalculator');
+const { BorrowingCalculator } = require('./borrowingCalculator');
 const { apiClient } = require('./apiClient');
 
-describe('Term Deposit Calculator Tests', () => {
+describe('BorrowingCalculator', () => {
+  describe('calculateBorrowingPower', () => {
 
-  it('should calculate borrowing power for standard values', async () => {
-    const result = await calculateBorrowingPower(120000, 2, 3000, 10000, 7.5);
-    assert.ok(result.maxLoanAmount > 0, 'Should yield a positive borrowing power amount');
-    assert.strictEqual(result.monthlyRepayment, 4600);
-  });
+    it('should calculate borrowing power for standard values', async () => {
+      const fakeClient = {
+          getTax: async () => 25750,
+          getHEM: async () => 3100
+      };
 
-  it('should return 0 for invalid negative inputs', async () => {
-    const result = await calculateBorrowingPower(30000, 3, 4000, 5000, 7.5);
-    assert.strictEqual(result.maxLoanAmount, 0);
-    assert.strictEqual(result.monthlyRepayment, 0);
+      const borrowingCalculator = new BorrowingCalculator(fakeClient);
+
+      const result = await borrowingCalculator.calculateBorrowingPower(125000, 2, 3000, 10000, 7.5);
+      assert.ok(result.maxLoanAmount > 0, 'Should yield a positive borrowing power amount');
+      assert.strictEqual(result.monthlyRepayment, 4870.83);
+    });
+
+    it('should return 0 for invalid negative inputs', async () => {
+      const fakeClient = {
+        getTax: async () => 0,
+        getHEM: async () => 0
+      }
+
+      const borrowingCalculator = new BorrowingCalculator(fakeClient);
+
+      const result = await borrowingCalculator.calculateBorrowingPower(30000, 3, 4000, 5000, 7.5);
+      assert.strictEqual(result.maxLoanAmount, 0);
+      assert.strictEqual(result.monthlyRepayment, 0);
+    });
   });
 });
 

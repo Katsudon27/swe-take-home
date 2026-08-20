@@ -1,4 +1,5 @@
-const { calculateBorrowingPower } = require('./borrowingCalculator');
+const { BorrowingCalculator } = require('./borrowingCalculator');
+const { apiClient } = require('./apiClient');
 
 // Global constant for mortgage simulation
 const INTEREST_RATE = 7.0; // 7.0% baseline interest rate
@@ -19,7 +20,10 @@ function runConsoleMode() {
                     // Banks assess loans using base rate + buffer for safety
                     const assessmentRate = INTEREST_RATE + ASSESSMENT_RATE_BUFFER;
 
-                    const result = await calculateBorrowingPower(
+                    const client = new apiClient();
+                    const borrowingCalculator = new BorrowingCalculator(client);
+
+                    const result = await borrowingCalculator.calculateBorrowingPower(
                         parseFloat(income),
                         parseInt(dependents),
                         parseFloat(expenses),
