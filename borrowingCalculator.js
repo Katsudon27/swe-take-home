@@ -11,11 +11,15 @@
  */
 
 class BorrowingCalculator {
-    constructor(loan_term_years = 30) {
-        this.loan_term_months = loan_term_years * 12
+    constructor(loanTermYears = 30, interestRate, assessmentRateBuffer) {
+        this.loanTermYears = loanTermYears
+        this.loanTermMonths = loanTermYears * 12;
+        
+        this.interestRate = interestRate
+        this.annualAssessmentRate = interestRate + assessmentRateBuffer
     }
 
-    calculateBorrowingPower(income, annualTax, baselineHEM, expenses, creditLimits, annualAssessmentRate) {
+    calculateBorrowingPower(income, annualTax, baselineHEM, expenses, creditLimits) {
         // 1. Calculate Net Monthly Income after tax deductions
         const netMonthlyIncome = (income - annualTax) / 12;
 
@@ -34,11 +38,11 @@ class BorrowingCalculator {
         }
 
         // 5. Calculate the monthly interest rate
-        const monthlyRate = (annualAssessmentRate / 100) / 12;
+        const monthlyRate = (this.annualAssessmentRate / 100) / 12;
 
         // 6. Calculate maximum borrowing power using the following formula:
         // P = M * (1 - (1 + R)^-N) / R
-        const maxLoanAmount = maxMonthlyRepayment * ((1 - Math.pow(1 + monthlyRate, - this.loan_term_months)) / monthlyRate);
+        const maxLoanAmount = maxMonthlyRepayment * ((1 - Math.pow(1 + monthlyRate, - this.loanTermMonths)) / monthlyRate);
 
         return {
             maxLoanAmount: Number(maxLoanAmount.toFixed(2)),
