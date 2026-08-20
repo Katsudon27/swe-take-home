@@ -12,18 +12,20 @@
 // Global constant for mortgage simulation
 const LOAN_TERM_MONTHS = 360; // 30 Years
 
-const { getTax, getHEM } = require('./apiClient');
+const { apiClient } = require('./apiClient');
 
 /**
  * Calculates the total borrowing power amount and the monthly repayment configuration
  */
 async function calculateBorrowingPower(income, dependents, expenses, creditLimits, annualAssessmentRate) {
+    client = new apiClient();
+
     // 1. Calculate Net Monthly Income after tax deductions
-    const annualTax = await getTax(income);
+    const annualTax = await client.getTax(income);
     const netMonthlyIncome = (income - annualTax) / 12;
 
     // 2. Determine living expenses (User declared expenses vs HEM baseline, whichever is higher)
-    const baselineHEM = await getHEM(income, dependents);
+    const baselineHEM = await client.getHEM(income, dependents);
     const totalLivingExpenses = Math.max(expenses, baselineHEM);
 
     // 3. Calculate credit card liability (~3% of total limits)

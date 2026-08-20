@@ -5,7 +5,7 @@
 
 const assert = require('assert'); 
 const { calculateBorrowingPower } = require('./borrowingCalculator');
-const { getTax, getHEM } = require('./apiClient');
+const { apiClient } = require('./apiClient');
 
 describe('Term Deposit Calculator Tests', () => {
 
@@ -22,28 +22,31 @@ describe('Term Deposit Calculator Tests', () => {
   });
 });
 
-describe('getTax Tests', () => {
+describe('apiClient', () => {
+  const client = new apiClient();
 
-  it('should return the calculated annual income tax', async () => {
-    const result = await getTax(125000);
-    assert.strictEqual(result, 25750);
+  describe ('getTax', () => {
+    it('should return the calculated annual income tax', async () => {
+      const result = await client.getTax(125000);
+      assert.strictEqual(result, 25750);
+    });
+
+    it('should return 0 for 0 income', async () => {
+      const result = await client.getTax(0);
+      assert.strictEqual(result, 0);
+    });
   });
 
-  it('should return 0 for 0 income', async () => {
-    const result = await getTax(0);
-    assert.strictEqual(result, 0);
-  });
-});
+  describe('getHEM', () => {
+    it('should return the calculated HEM monthly baseline cost', async () => {
+      const result = await client.getHEM(125000, 2);
+      assert.strictEqual(result, 3100);
+    });
 
-describe('getHEM Tests', () => {
-
-  it('should return the calculated HEM monthly baseline cost', async () => {
-    const result = await getHEM(125000, 2);
-    assert.strictEqual(result, 3100);
+    it('should return 1600 for 0 income and 0 dependent', async () => {
+      const result = await client.getHEM(0, 0);
+      assert.strictEqual(result, 1600);
+    });
   });
 
-  it('should return 1600 for 0 income and 0 dependent', async () => {
-    const result = await getHEM(0, 0);
-    assert.strictEqual(result, 1600);
-  });
 });
