@@ -3,34 +3,36 @@ const SERVER_URL = process.env.SERVER_URL
 const VALID_PAT = process.env.VALID_PAT
 
 class APIClient {
-    async getTax(income) {
-        const response = await fetch(`${SERVER_URL}/api/tax?income=${income}`, {
+    async #request(path, errorMessage) {
+        const response = await fetch(`${SERVER_URL}${path}`, {
             headers: {
-            'Authorization': `Bearer ${VALID_PAT}`
+                Authorization: `Bearer ${VALID_PAT}`
             }
         });
 
         if (!response.ok) {
-            throw new Error(`Tax API failed with status ${response.status}`);
+            throw new Error(`${errorMessage}: ${response.status}`);
         }
 
-        const responseJSON = await response.json();
-        return responseJSON.tax;
+        return response.json();
+    }
+
+    async getTax(income) {
+        const data = await this.#request(
+            `/api/tax?income=${income}`,
+            'Tax API failed with status code'
+        );
+
+        return data.tax;
     }
 
     async getHEM(income, dependents) {
-        const response = await fetch(`${SERVER_URL}/api/hem?income=${income}&dependents=${dependents}`, {
-            headers: {
-            'Authorization': `Bearer ${VALID_PAT}`
-            }
-        });
+        const data = await this.#request(
+            `/api/hem?income=${income}&dependents=${dependents}`,
+            'HEM API failed with status code'
+        );
 
-        if (!response.ok) {
-            throw new Error(`HEM API failed with status ${response.status}`);
-        }
-
-        const responseJSON = await response.json();
-        return responseJSON.hem;
+        return data.hem;
     }
 }
 
