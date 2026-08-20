@@ -11,18 +11,15 @@
  */
 
 class BorrowingCalculator {
-    constructor(client, loan_term_years = 30) {
-        this.client = client
+    constructor(loan_term_years = 30) {
         this.loan_term_months = loan_term_years * 12
     }
 
-    async calculateBorrowingPower(income, dependents, expenses, creditLimits, annualAssessmentRate) {
+    calculateBorrowingPower(income, annualTax, baselineHEM, expenses, creditLimits, annualAssessmentRate) {
         // 1. Calculate Net Monthly Income after tax deductions
-        const annualTax = await this.client.getTax(income);
         const netMonthlyIncome = (income - annualTax) / 12;
 
         // 2. Determine living expenses (User declared expenses vs HEM baseline, whichever is higher)
-        const baselineHEM = await this.client.getHEM(income, dependents);
         const totalLivingExpenses = Math.max(expenses, baselineHEM);
 
         // 3. Calculate credit card liability (~3% of total limits)
