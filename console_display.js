@@ -1,5 +1,5 @@
-const { BorrowingCalculator } = require('./BorrowingCalculator');
-const { APIClient } = require('./APIClient');
+const { BorrowingCalculator } = require('./src/borrowing_calculator');
+const { APIClient } = require('./src/api_client');
 
 
 function askQuestion(interface, query) {

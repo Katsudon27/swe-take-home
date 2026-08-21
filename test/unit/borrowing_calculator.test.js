@@ -2,7 +2,7 @@
  * Borrowing Power Calculator Test Suite
  */
 const assert = require('assert'); 
-const { BorrowingCalculator } = require('./BorrowingCalculator');
+const { BorrowingCalculator } = require('../../src/borrowing_calculator');
 
 describe('BorrowingCalculator', () => {
   describe('calculateBorrowingPower', () => {

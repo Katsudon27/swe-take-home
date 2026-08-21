@@ -2,7 +2,7 @@
  * API Integration Test Suite
  */
 const assert = require('assert'); 
-const { APIClient } = require('./APIClient');
+const { APIClient } = require('../../src/api_client');
 
 describe('APIClient', () => {
   const client = new APIClient();
