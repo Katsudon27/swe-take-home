@@ -13,6 +13,11 @@ const { handleTax, handleHem } = require('./api_handler');
 const PORT = 3000;
 VALID_PAT = process.env.VALID_PAT
 
+const api_routes = {
+    "/api/tax": handleTax,
+    "/api/hem": handleHem
+};
+
 /**
  * Server
 */
@@ -52,8 +57,10 @@ const server = http.createServer((req, res) => {
     console.table(Object.fromEntries(params));
     console.log("==============================");
 
-    if (url.pathname === "/api/tax") {return handleTax(params, res);}
-    if (url.pathname === "/api/hem") {return handleHem(params, res);}
+    const handler = api_routes[url.pathname]
+    if (handler) {
+        return handler(params, res);
+    }
 
     return errorJSON(res, 404, "Not Found", "The requested endpoint does not exist.");
 });
