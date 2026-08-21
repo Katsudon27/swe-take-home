@@ -19,5 +19,17 @@ describe('BorrowingCalculator Unit Tests', () => {
       assert.strictEqual(result.maxLoanAmount, 0);
       assert.strictEqual(result.monthlyRepayment, 0);
     });
+
+    it('should throw an error when the input parameters contain negative values', async () => {
+      assert.throws(() => borrowingCalculator.calculateBorrowingPower(-30000, 2000, 1600, 4000, 5000));
+    });
+
+    it('should throw an error when the input parameters contain string values', async () => {
+      assert.throws(() => borrowingCalculator.calculateBorrowingPower("30000", 2000, 1600, 4000, 5000));
+    });
+
+    it('should throw an error when the input parameters contain NaN values', async () => {
+      assert.throws(() => borrowingCalculator.calculateBorrowingPower(NaN, 2000, 1600, 4000, 5000));
+    });
   });
 });
