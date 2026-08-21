@@ -3,3 +3,6 @@
 
 # Ignore .env file
 .env
+
+# Ignore test coverage output from Istanbul
+.nyc_output
