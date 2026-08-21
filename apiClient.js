@@ -4,17 +4,22 @@ const VALID_PAT = process.env.VALID_PAT
 
 class APIClient {
     async #request(path, errorMessage) {
-        const response = await fetch(`${SERVER_URL}${path}`, {
-            headers: {
-                Authorization: `Bearer ${VALID_PAT}`
+        try {
+            const response = await fetch(`${SERVER_URL}${path}`, {
+                headers: {
+                    Authorization: `Bearer ${VALID_PAT}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorDetails = await response.json();
+                throw new Error(`${errorMessage} ${response.status} - ${errorDetails.error} (${errorDetails.message})`);
             }
-        });
 
-        if (!response.ok) {
-            throw new Error(`${errorMessage}: ${response.status}`);
+            return response.json();
+        } catch (error) {
+            console.error(error.message);
         }
-
-        return response.json();
     }
 
     async getTax(income) {
@@ -23,7 +28,11 @@ class APIClient {
             'Tax API failed with status code'
         );
 
-        return data.tax;
+        if (data.tax == undefined) {
+            throw new Error(`Invalid JSON returned by server.`); 
+        }else {
+            return data.tax;
+        }
     }
 
     async getHEM(income, dependents) {
@@ -32,7 +41,11 @@ class APIClient {
             'HEM API failed with status code'
         );
 
-        return data.hem;
+        if (data.hem == undefined) {
+            throw new Error(`Invalid JSON returned by server.`); 
+        }else {
+            return data.hem;
+        }
     }
 }
 
