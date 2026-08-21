@@ -1,7 +1,7 @@
 const assert = require('assert');
 const { APIClient } = require('../../src/api_client');
 
-describe('APIClient', () => {
+describe('APIClient Unit Tests', () => {
     const client = new APIClient();
     const income = 125000
 
@@ -22,7 +22,7 @@ describe('APIClient', () => {
             assert.strictEqual(tax, 25750);
         });
 
-        it('should throw error when response is not ok', async () => {
+        it('should throw error when invalid response is received', async () => {
             global.fetch = async () => ({
                 ok: false,
                 status: 401,
