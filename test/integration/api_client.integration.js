@@ -23,6 +23,11 @@ describe('APIClient Integration Tests', () => {
     it('should return a rejected promise when a negative value is passed in as argument', async () => {
       await assert.rejects(client.getTax(-100000));
     });
+
+    it('should return a rejected promise when an invalid PAT is used', async () => {
+      const invalidClient = new APIClient(process.env.SERVER_URL, "abcd")
+      await assert.rejects(invalidClient.getTax(10000));
+    });
   });
 
   describe('getHEM', () => {
