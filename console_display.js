@@ -33,13 +33,13 @@ async function runConsoleMode() {
     const annualTax = await client.getTax(parsedIncome)
     const baselineHEM = await client.getHEM(parsedIncome, parsedDependents)
 
-    const result = borrowingCalculator.calculateBorrowingPower(
-        parsedIncome,
-        annualTax,
-        baselineHEM,
-        parseFloat(expenses),
-        parseFloat(creditLimits)
-    );
+    const result = borrowingCalculator.calculateBorrowingPower({
+      income: parsedIncome,
+      annualTax: annualTax,
+      baselineHEM: baselineHEM,
+      expenses: parseFloat(expenses),
+      creditLimits: parseFloat(creditLimits)
+    });
 
     console.log("\n--- Calculation Summary ---");
     console.log(`Maximum Borrowing Power at ${borrowingCalculator.interestRate}%: $${result.maxLoanAmount.toLocaleString()}`);

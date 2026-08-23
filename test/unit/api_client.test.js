@@ -22,7 +22,7 @@ describe('APIClient Unit Tests', () => {
             assert.strictEqual(tax, 25750);
         });
 
-        it('should throw error when invalid response is received', async () => {
+        it('should return a rejected promise when an invalid response is received', async () => {
             global.fetch = async () => ({
                 ok: false,
                 status: 401,
@@ -32,7 +32,7 @@ describe('APIClient Unit Tests', () => {
             await assert.rejects(client.getTax(income));
         });
 
-        it('should throw error when the server is unavailable', async () => {
+        it('should return a rejected promise when the server is unavailable', async () => {
             global.fetch = async () => {
                 throw new Error('fetch failed'); 
             };
@@ -40,7 +40,7 @@ describe('APIClient Unit Tests', () => {
             await assert.rejects(client.getTax(income));
         });
 
-        it('should throw error if server returns invalid JSON', async () => {
+        it('should return a rejected promise if server returns invalid JSON', async () => {
             global.fetch = async () => ({
                 ok: true,
                 json: async () => ({ taxAmount: "1000" })
@@ -64,7 +64,7 @@ describe('APIClient Unit Tests', () => {
             assert.strictEqual(hemValue, 3100);
         });
 
-        it('should throw error if server returns invalid JSON', async () => {
+        it('should return a rejected promise if server returns invalid JSON', async () => {
             global.fetch = async () => ({
                 ok: true,
                 json: async () => ({ hemAmount: "1600" })

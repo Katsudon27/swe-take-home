@@ -8,28 +8,47 @@ describe('BorrowingCalculator Unit Tests', () => {
   describe('calculateBorrowingPower', () => {
     const borrowingCalculator = new BorrowingCalculator(undefined, 4, 3.5);
 
+    let standardInput = {
+      income: 125000,
+      annualTax: 25750,
+      baselineHEM: 3100,
+      expenses: 3000,
+      creditLimits: 10000
+    };
+
     it('should calculate borrowing power for standard values', async () => {
-      const result = borrowingCalculator.calculateBorrowingPower(125000, 25750, 3100, 3000, 10000);
+      const result = borrowingCalculator.calculateBorrowingPower(standardInput);
       assert.ok(result.maxLoanAmount > 0, 'Should yield a positive borrowing power amount');
       assert.strictEqual(result.monthlyRepayment, 4870.83);
     });
 
     it('should return 0 when maxMonthlyRepayment is less than or equal to 0 ', async () => {
-      const result = borrowingCalculator.calculateBorrowingPower(30000, 2000, 1600, 4000, 5000);
+      const input = {
+        income: 30000,
+        annualTax: 2000,
+        baselineHEM: 1600,
+        expenses: 4000,
+        creditLimits: 5000
+      };
+
+      const result = borrowingCalculator.calculateBorrowingPower(input);
       assert.strictEqual(result.maxLoanAmount, 0);
       assert.strictEqual(result.monthlyRepayment, 0);
     });
 
     it('should throw an error when the input parameters contain negative values', async () => {
-      assert.throws(() => borrowingCalculator.calculateBorrowingPower(-30000, 2000, 1600, 4000, 5000));
+      standardInput.income = -30000
+      assert.throws(() => borrowingCalculator.calculateBorrowingPower(standardInput));
     });
 
     it('should throw an error when the input parameters contain string values', async () => {
-      assert.throws(() => borrowingCalculator.calculateBorrowingPower("30000", 2000, 1600, 4000, 5000));
+      standardInput.income = "30000"
+      assert.throws(() => borrowingCalculator.calculateBorrowingPower(standardInput));
     });
 
     it('should throw an error when the input parameters contain NaN values', async () => {
-      assert.throws(() => borrowingCalculator.calculateBorrowingPower(NaN, 2000, 1600, 4000, 5000));
+      standardInput.income = NaN
+      assert.throws(() => borrowingCalculator.calculateBorrowingPower(standardInput));
     });
   });
 });
