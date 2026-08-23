@@ -1,11 +1,13 @@
 /**
  * API Integration Test Suite
  */
+require('dotenv').config();
+
 const assert = require('assert'); 
 const { APIClient } = require('../../src/api_client');
 
 describe('APIClient Integration Tests', () => {
-  const client = new APIClient();
+  const client = new APIClient(process.env.SERVER_URL, process.env.VALID_PAT);
 
   describe ('getTax', () => {
     it('should return the calculated annual income tax', async () => {

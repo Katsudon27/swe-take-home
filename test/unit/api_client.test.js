@@ -2,7 +2,7 @@ const assert = require('assert');
 const { APIClient } = require('../../src/api_client');
 
 describe('APIClient Unit Tests', () => {
-    const client = new APIClient();
+    const client = new APIClient("testing url", "testing pat");
     const income = 125000
 
     const originalFetch = global.fetch;

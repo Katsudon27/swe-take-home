@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { BorrowingCalculator } = require('./src/borrowing_calculator');
 const { APIClient } = require('./src/api_client');
 
@@ -22,7 +24,7 @@ async function runConsoleMode() {
     const creditLimits = await askQuestion(rl, "Total Credit Card Limits: $");
 
     //Instantiate objects required for calculation of borrowing power
-    const client = new APIClient();
+    const client = new APIClient(process.env.SERVER_URL, process.env.VALID_PAT);
     const borrowingCalculator = new BorrowingCalculator(undefined, 7.0, 3.0);
 
     //Parse income and dependents for subsequent API callings

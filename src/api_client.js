@@ -1,13 +1,14 @@
-require('dotenv').config();
-const SERVER_URL = process.env.SERVER_URL
-const VALID_PAT = process.env.VALID_PAT
-
 class APIClient {
+    constructor(serverURL, validPAT) {
+        this.serverURL = serverURL
+        this.validPAT = validPAT
+    }
+
     async #request(path, errorMessage) {
         try {
-            const response = await fetch(`${SERVER_URL}${path}`, {
+            const response = await fetch(`${this.serverURL}${path}`, {
                 headers: {
-                    Authorization: `Bearer ${VALID_PAT}`
+                    Authorization: `Bearer ${this.validPAT}`
                 }
             });
 
