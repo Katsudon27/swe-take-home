@@ -11,7 +11,7 @@ const { errorJSON } = require('./utils');
 const { handleTax, handleHem } = require('./api_handler');
 
 const PORT = 3000;
-VALID_PAT = process.env.VALID_PAT
+const validPAT = process.env.VALID_PAT
 
 const api_routes = {
     "/api/tax": handleTax,
@@ -30,7 +30,7 @@ function authenticate(req, res) {
     }
 
     const token = authHeader.slice(7);
-    if (token !== VALID_PAT) {
+    if (token !== validPAT) {
         errorJSON(res, 401, "Invalid Personal Access Token", "The provided token is invalid.");
         return false;
     }
@@ -45,7 +45,7 @@ const server = http.createServer((req, res) => {
         return errorJSON(res, 405, "Method Not Allowed", "Only GET requests are supported.");
     }
 
-    const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    const url = new URL(req.url, `http://${/* istanbul ignore next */ req.headers.host || 'localhost'}`);
     const params = url.searchParams;
 
     console.log("==============================");
@@ -65,7 +65,11 @@ const server = http.createServer((req, res) => {
     return errorJSON(res, 404, "Not Found", "The requested endpoint does not exist.");
 });
 
+/* istanbul ignore next */
+if (require.main === module) {
+    server.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}/`);
+    });
+}
 
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}/`);
-});
+module.exports = server;
