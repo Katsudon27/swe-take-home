@@ -77,3 +77,21 @@ You can run **all** tests together with the following command*:
 ```sh
 npm test
 ```
+
+## Design Decisions & Trade-offs
+
+### Task 1: replacing placeholder functions with API calls
+
+#### Method for making an API call
+
+The Fetch API is used for making API calls to the server for the following reasons:
+
+- easier to use and cleaner syntax compared to XMLHttpRequest
+- doesn't introduce additional dependency like Axios
+
+**Trade-off:**
+- lacks some of the advanced features that Axios offers such as better error handling and auto-parsing of server response in JSON
+
+#### `async/await` vs Promise
+
+I opted to use the `async/await` syntax rather than the Promise-based approach mainly because of the better readability of its syntax. 
