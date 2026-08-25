@@ -5,9 +5,10 @@
   "scripts": {
     "api": "node server/server.js",
     "test": "nyc mocha test/**/*.js",
-    "test:unit": "nyc mocha test/unit/*.js",
+    "test:client_unit": "nyc mocha test/client_unit/*.js",
+    "test:server_unit": "nyc mocha test/server_unit/*.js",
     "test:integration": "nyc mocha test/integration/*.js",
-    "start": "node console_display.js"
+    "start": "node src/console_display.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",

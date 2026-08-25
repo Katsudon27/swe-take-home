@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const { BorrowingCalculator } = require('./src/borrowing_calculator');
-const { APIClient } = require('./src/api_client');
+const { BorrowingCalculator } = require('./borrowing_calculator');
+const { APIClient } = require('./api_client');
 
 
 function askQuestion(interface, query) {
