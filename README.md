@@ -80,6 +80,11 @@ npm test
 
 ## Design Decisions & Trade-offs
 
+### Assumptions 
+- It is mandatory for annual income tax and HEM baseline to be calculated and returned via their respective server APIs.
+- Different calculator configurations are expected (i.e. different interest rate, assessment rate buffer or loan term duration).
+- The calculator is intended for informational purpose only.
+
 ### Task 1: replacing placeholder functions with API calls
 
 #### Method for making an API call
@@ -95,3 +100,59 @@ The Fetch API is used for making API calls to the server for the following reaso
 #### `async/await` vs Promise
 
 I opted to use the `async/await` syntax rather than the Promise-based approach mainly because of the better readability of its syntax. 
+
+### Task 2: making the code maintainable
+
+#### Server-side vs Client-side
+
+I decided to keep the calculations for borrowing power on the client-side for the following reasons:
+
+- Faster performance: calculations of borrowing power can be made immediately without having to make an additional API call to the server.
+- Lower server workload: server does not have to handle an additional request.
+
+**Trade-off:**
+- Potential security issue: this would expose the formula of calculating power to be accessed and read by the user which could be undesirable if the formula is considered proprietary information.
+- Client-side manipulation: the user can modify the formula or inputs and potentially produce different results.
+
+#### Making the code maintainable
+
+##### Client-side
+
+I decided to split the original code into classes with distinct responsibilities and use runConsoleMode() in src/console_display.js as an orchestrator function to coordinate the interaction between both objects.
+
+Classes/files and their responsibilities:
+- BorrowingCalculator: focuses on the calculation of borrowing power, configurable with different loan term years/interest rate/assessment rate buffer.
+- APIClient: focuses on making API calls to the server and parsing the received response.
+- console_display.js: prompts and collects user inputs, orchestrates and invokes methods for each object in order, display the final results.
+
+High-level overview of how the classes interact in runConsoleMode():
+1. Get user input 
+2. Instantiate both objects
+3. Make API Calls with the APIClient object for annual income tax and HEM baseline cost
+4. Pass the returned values along with user inputs into the calculateBorrowingPower function of BorrowingCalculator
+5. Display the results 
+
+**Reasons:**
+- Clearer separation of responsibilities: code is easier to understand and modify. 
+- Easier testing and maintenance: API calls and calculations for borrowing power can be tested independently.
+- Enables instantiation of objects with different configurations for actual use or testing. For example, the APIClient class can be tested without the usage of real credentials.
+
+**Trade-offs:**
+- Could introduce unnecessary complexity if future features do not require different configurations of the borrowingCalculator object.
+- Orchestrator function in console_display.js may become bloated or complex if more features are introduced. 
+
+##### Server-side
+- The original code is split into separate files and export relevant functions as modules to be used:
+  - server.js: starts the server, authenticates incoming requests and route them to the appropriate handler.
+  - api_handler.js: handles incoming requests by parsing and validating query parameters and returning the results via appropriate calculations.
+  - utils.js: contains utility functions for formatting JSON responses and validating numerical query parameters.
+  - calculation.js: contains functions for calculations of annual income tax and HEM baseline cost.
+- In server.js, API routes are mapped to their respective handlers via a hash object.
+
+**Reasons:**
+- Clearer separation of responsibilities: code is easier to understand and modify.
+- Better reusability: for example, functions from utils.js or calculation.js can be used for future API endpoints.
+
+**Trade-offs:**
+- More files to maintain/manage
+- Introduces complexity in terms of understanding how requests are routed and responses are made by tracing across several modules.
