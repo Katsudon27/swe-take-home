@@ -1,6 +1,6 @@
 /**
  * API Integration Test Suite
- */
+*/
 require('dotenv').config();
 
 const assert = require('assert'); 

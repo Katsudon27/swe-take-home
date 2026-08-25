@@ -1,13 +1,12 @@
+/**
+ * Calculation for HEM baseline cost
+*/
 const HEM_MATRIX = {
     low:    { 0: 1600, 1: 2100, 2: 2500, 3: 2800 },
     medium: { 0: 2200, 1: 2700, 2: 3100, 3: 3500 },
     high:   { 0: 2600, 1: 3100, 2: 3600, 3: 4100 }
 };
 
-
-/**
- * Mock HEM Calculation
-*/
 function calcHem(income, dependents) {
     const incomeTier = income > 150000 ? 'high' : income > 60000 ? 'medium' : 'low';
     const depCount = Math.min(Math.max(Math.floor(dependents), 0), 3);
@@ -15,7 +14,7 @@ function calcHem(income, dependents) {
 }
 
 /**
- * Mock Tax Calculation
+ * Calculation for annual income tax
 */
 function calcTax(income) {
     let tax = 0;

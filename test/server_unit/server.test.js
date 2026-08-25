@@ -1,3 +1,6 @@
+/**
+ * Server API Endpoints Test Suite
+ */
 require('dotenv').config();
 const request = require("supertest");
 const assert = require('assert'); 
@@ -6,6 +9,7 @@ const server = require('../../server/server');
 
 console.log = function() {} //Disable logging to allow test results to be viewed clearly
 
+//helper functions for constructing endpoint URLs
 const taxEndpointURL = function (income) {
     return `/api/tax?income=${income}`;
 };

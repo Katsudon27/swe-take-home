@@ -13,14 +13,13 @@ const { handleTax, handleHem } = require('./api_handler');
 const PORT = 3000;
 const validPAT = process.env.VALID_PAT
 
+//Maps the API endpoints to their corresponding handlers
 const api_routes = {
     "/api/tax": handleTax,
     "/api/hem": handleHem
 };
 
-/**
- * Server
-*/
+//Authenticates the request by checking the Authorization header and the Bearer token
 function authenticate(req, res) {
     const authHeader = req.headers.authorization;
 
@@ -67,6 +66,7 @@ const server = http.createServer((req, res) => {
 
 /* istanbul ignore next */
 if (require.main === module) {
+    //Start the server
     server.listen(PORT, () => {
         console.log(`Server running at http://localhost:${PORT}/`);
     });

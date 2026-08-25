@@ -1,15 +1,6 @@
 /**
- * Borrowing Power Calculator
- * 
- * Gen's incomplete prototype. 
- * This currently calculates what a user can borrow over 30 years.
- * Currently this code uses placeholder methods for Tax and HEM values. 
- */
-
-/**
- * Calculates the total borrowing power amount and the monthly repayment configuration
- */
-
+ * Borrowing Calculator class that is responsible for calculation-related operations.
+*/
 class BorrowingCalculator {
     constructor(loanTermYears = 30, interestRate, assessmentRateBuffer) {
         this.loanTermYears = loanTermYears
@@ -19,6 +10,7 @@ class BorrowingCalculator {
         this.annualAssessmentRate = interestRate + assessmentRateBuffer
     }
 
+    //Calculates the total borrowing power amount and the monthly repayment configuration
     calculateBorrowingPower(input) {
         //Ensure that the parameters passed in are non-negative numbers
         for (const key in input) {

@@ -3,7 +3,7 @@ require('dotenv').config();
 const { BorrowingCalculator } = require('./borrowing_calculator');
 const { APIClient } = require('./api_client');
 
-
+//Helper function to prompt user with query and return user input
 function askQuestion(interface, query) {
   return new Promise(resolve => {
     interface.question(query, resolve);
@@ -35,6 +35,7 @@ async function runConsoleMode() {
     const annualTax = await client.getTax(parsedIncome)
     const baselineHEM = await client.getHEM(parsedIncome, parsedDependents)
 
+    //Pass user inputs and results from API calls as parameters for calculation
     const result = borrowingCalculator.calculateBorrowingPower({
       income: parsedIncome,
       annualTax: annualTax,
@@ -43,6 +44,7 @@ async function runConsoleMode() {
       creditLimits: parseFloat(creditLimits)
     });
 
+    //Display results
     console.log("\n--- Calculation Summary ---");
     console.log(`Maximum Borrowing Power at ${borrowingCalculator.interestRate}%: $${result.maxLoanAmount.toLocaleString()}`);
     console.log(`Assumed Monthly Mortgage Repayment: $${result.monthlyRepayment.toLocaleString()} over ${borrowingCalculator.loanTermYears} years`);

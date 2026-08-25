@@ -1,5 +1,5 @@
 /**
- * Borrowing Power Calculator Test Suite
+ * Borrowing Calculator Test Suite
  */
 const assert = require('assert'); 
 const { BorrowingCalculator } = require('../../src/borrowing_calculator');

@@ -1,3 +1,6 @@
+/**
+ * APIClient Test Suite
+ */
 const assert = require('assert');
 const { APIClient } = require('../../src/api_client');
 

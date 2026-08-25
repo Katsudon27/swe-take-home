@@ -1,6 +1,7 @@
 const { calcTax, calcHem } = require('./calculation')
 const { sendJSON, errorJSON, paramNumberCheck } = require('./utils')
 
+//handles incoming request to the tax API 
 function handleTax(params, res) {
     const incomeResult = paramNumberCheck(params, "income", "Income");
     if (incomeResult.error) {
@@ -13,6 +14,7 @@ function handleTax(params, res) {
     });
 }
 
+//handles incoming request to the HEM API
 function handleHem(params, res) {
     const incomeResult = paramNumberCheck(params, "income", "Income");
     if (incomeResult.error) {

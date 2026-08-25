@@ -1,9 +1,13 @@
+/**
+ * Borrowing Calculator class that is responsible for making requests to the server.
+*/
 class APIClient {
     constructor(serverURL, validPAT) {
         this.serverURL = serverURL
         this.validPAT = validPAT
     }
 
+    //Private method for constructing GET request
     async #request(path, errorMessage) {
         try {
             const response = await fetch(`${this.serverURL}${path}`, {
@@ -12,6 +16,7 @@ class APIClient {
                 }
             });
 
+            //Throw error with details from server response if invalid response is received
             if (!response.ok) {
                 const errorDetails = await response.json();
                 throw new Error(`${errorMessage} ${response.status} - ${errorDetails.error} (${errorDetails.message})`);
@@ -23,6 +28,7 @@ class APIClient {
         }
     }
 
+    //function for making request to the tax API
     async getTax(income) {
         const data = await this.#request(
             `/api/tax?income=${income}`,
@@ -36,6 +42,7 @@ class APIClient {
         }
     }
 
+    //function for making request to the HEM API
     async getHEM(income, dependents) {
         const data = await this.#request(
             `/api/hem?income=${income}&dependents=${dependents}`,

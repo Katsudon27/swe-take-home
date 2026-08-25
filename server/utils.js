@@ -1,3 +1,6 @@
+//Helper functions used for server-side operations
+
+//Returns API response with JSON payload
 function sendJSON(res, statusCode, body) {
     res.writeHead(statusCode, {
         "Content-Type": "application/json"
@@ -5,10 +8,12 @@ function sendJSON(res, statusCode, body) {
     res.end(JSON.stringify(body));
 }
 
+//Returns error response with JSON payload that contains information on the error
 function errorJSON(res, statusCode, error, message) {
     return sendJSON(res, statusCode, { error, message });
 }
 
+//Evaluates if query parameters are provided and are positive numbers
 function paramNumberCheck(params, key, label) {
     const rawValue = params.get(key);
     if (rawValue === null || rawValue.trim() === "") {
