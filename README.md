@@ -215,7 +215,7 @@ I wrote the following tests that can be used by future developers to ensure that
 
 ### Test Coverage
 - I managed to achieve full test coverage (tracked via Istanbul) as shown in screenshot below:
-![Screenshot of test coverage](https://ibb.co/qFPcg396)
+![Screenshot of test coverage](https://i.ibb.co/cX7Z8Stq/Screenshot-2026-08-25-163659.png)
 
 ### Things I'd add/change
 While documenting my submission, I reflected and realised that there are certain areas that I can improve:
