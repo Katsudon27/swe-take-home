@@ -1,8 +1,29 @@
 # Ferocia Junior Engineering Code Exercise
-Hi there! This is my submission for the code exercise which extends upon the provided source code for a borrowing power calculator. My submission covers the following tasks:
-- replacing placeholder functions with API calls
-- refactoring the source code for better maintainability
-- ensuring the refactored source code pass tests with full coverage
+Hi there! This is my submission for the code exercise which extends upon the provided source code for a borrowing power calculator.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Server](#server)
+  - [Running](#running)
+  - [Testing](#testing)
+- [Design Decisions \& Trade-offs](#design-decisions--trade-offs)
+  - [Assumptions](#assumptions)
+  - [Task 1: replacing placeholder functions with API calls](#task-1-replacing-placeholder-functions-with-api-calls)
+    - [Method for making an API call](#method-for-making-an-api-call)
+    - [`async/await` vs Promise](#asyncawait-vs-promise)
+  - [Task 2: making the code maintainable](#task-2-making-the-code-maintainable)
+      - [Server-side vs Client-side](#server-side-vs-client-side)
+      - [Making the code maintainable](#making-the-code-maintainable)
+  - [Task 3: testing the code](#task-3-testing-the-code)
+- [Miscellaneous](#miscellaneous)
+  - [Additional things to highlight](#additional-things-to-highlight)
+  - [Dependencies/libraries used](#dependencieslibraries-used)
+  - [Test Coverage](#test-coverage)
+  - [Things I'd add/change](#things-id-addchange)
 
 ## Getting Started
 
@@ -113,8 +134,8 @@ I decided to keep the calculations for borrowing power on the client-side for th
 - Lower server workload: server does not have to handle an additional request.
 
 **Trade-off:**
-- Potential security issue: this would expose the formula of calculating power to be accessed and read by the user which could be undesirable if the formula is considered proprietary information.
-- Client-side manipulation: the user can modify the formula or inputs and potentially produce different results.
+- This would expose the formula of calculating power to be accessed and read by the user which could be undesirable if the formula is considered proprietary information.
+- The user can modify the formula or inputs and potentially produce different results.
 
 #### Making the code maintainable
 
@@ -137,7 +158,7 @@ High-level overview of how the classes interact in runConsoleMode():
 **Reasons:**
 - Clearer separation of responsibilities: code is easier to understand and modify. 
 - Easier testing and maintenance: API calls and calculations for borrowing power can be tested independently.
-- Enables instantiation of objects with different configurations for actual use or testing. For example, the APIClient class can be tested without the usage of real credentials.
+- Enables instantiation of objects with different configurations for actual use or testing: for example, the APIClient class can be tested without the usage of real credentials.
 
 **Trade-offs:**
 - Could introduce unnecessary complexity if future features do not require different configurations of the borrowingCalculator object.
@@ -178,3 +199,26 @@ I wrote the following tests that can be used by future developers to ensure that
 
 **Trade-off:**
 - Writing and maintaining tests would require additional effort.
+
+## Miscellaneous
+
+### Additional things to highlight
+- I opted to use `dotenv` for loading environment variables from a env file to avoid hard-coding the the information into the source code.
+- I added input validation for calculateBorrowingPower's parameters.
+
+### Dependencies/libraries used
+- Dotenv for loading environment variables
+- Mocha as the main testing framework
+- `assert` module from Node.js as the assertion library
+- Istanbul for tracking test coverage
+- Supertest for making HTTP requests to the server
+
+### Test Coverage
+- I managed to achieve full test coverage (tracked via Istanbul) as shown in screenshot below:
+![Screenshot of test coverage](https://ibb.co/qFPcg396)
+
+### Things I'd add/change
+While documenting my submission, I reflected and realised that there are certain areas that I can improve:
+
+- Add linting for consistent formatting
+- Separate the orchestrator function from console_display.js into its own layer/module for better maintainability.
