@@ -44,6 +44,8 @@ npm run api
 
 *Note: you can stop the server with CTRL + C.*
 
+There is also an [API documentation](server.md) for the development server.
+
 ### Running
 
 You can run the calculator with the following command*:
@@ -156,3 +158,23 @@ High-level overview of how the classes interact in runConsoleMode():
 **Trade-offs:**
 - More files to maintain/manage
 - Introduces complexity in terms of understanding how requests are routed and responses are made by tracing across several modules.
+
+### Task 3: testing the code
+
+I wrote the following tests that can be used by future developers to ensure that their changes would not unintentionally break the existing functionalities:
+
+- api_client.test.js
+  - unit tests for the APIClient class
+  - tests parsing of successful API responses and error handling for invalid or unsuccessful responses
+- borrowing_calculator.test.js
+  - unit tests for the BorrowingCalculator class
+  - contains the original tests from the provided source code
+  - tests validation and error handling when invalid parameters are provided.
+- server.test.js: 
+  - unit tests for the server API endpoints
+  - tests expected responses when valid and invalid requests are received.
+- api_client.integration.js
+  - integration tests to ensure that the APIClient can make requests to the server without errors.
+
+**Trade-off:**
+- Writing and maintaining tests would require additional effort.
